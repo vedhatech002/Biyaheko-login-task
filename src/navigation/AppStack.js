@@ -1,42 +1,53 @@
 import React from "react";
-import {
-  createDrawerNavigator,
-  useDrawerStatus,
-} from "@react-navigation/drawer";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { StatusBar } from "expo-status-bar"; // ✅ for controlling status bar
+import { StatusBar } from "expo-status-bar";
 import HomeScreen from "../screens/HomeScreen";
-import CustomDrawerContent from "../components/CustomDrawerContent";
 import MyAccountScreen from "../screens/MyAccountScreen";
+import CustomDrawerContent from "../components/CustomDrawerContent";
+import AppHeader from "../components/AppHeader";
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 
-function HomeStack() {
+function ScreenWithHeader({ children, navigation }) {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="HomeScreen" component={HomeScreen} />
-    </Stack.Navigator>
+    <SafeAreaView
+      style={{ flex: 1, backgroundColor: "black" }}
+      edges={["top", "bottom"]}
+    >
+      <StatusBar style="light" translucent={false} backgroundColor="#000" />
+      <AppHeader navigation={navigation} />
+      {children}
+    </SafeAreaView>
   );
 }
 
-// ✅ Wrapper to control status bar when drawer opens
-function DrawerWrapper(props) {
-  const drawerStatus = useDrawerStatus();
-
+function HomeStack({ navigation }) {
   return (
-    <>
-      {/* Change status bar based on drawer state */}
-      <StatusBar style={"light"} translucent={false} backgroundColor={"#000"} />
-      <CustomDrawerContent {...props} />
-    </>
+    <ScreenWithHeader navigation={navigation}>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="HomeScreen" component={HomeScreen} />
+      </Stack.Navigator>
+    </ScreenWithHeader>
+  );
+}
+
+function AccountStack({ navigation }) {
+  return (
+    <ScreenWithHeader navigation={navigation}>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="MyAccountScreen" component={MyAccountScreen} />
+      </Stack.Navigator>
+    </ScreenWithHeader>
   );
 }
 
 export default function AppStack() {
   return (
     <Drawer.Navigator
-      drawerContent={(props) => <DrawerWrapper {...props} />}
+      drawerContent={(props) => <CustomDrawerContent {...props} />}
       screenOptions={{
         headerShown: false,
         drawerType: "front",
@@ -49,7 +60,7 @@ export default function AppStack() {
       }}
     >
       <Drawer.Screen name="Home" component={HomeStack} />
-      <Drawer.Screen name="MyAccount" component={MyAccountScreen} />
+      <Drawer.Screen name="MyAccount" component={AccountStack} />
     </Drawer.Navigator>
   );
 }

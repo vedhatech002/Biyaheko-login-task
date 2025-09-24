@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { AuthContext } from "../context/AuthContext";
+import AppHeader from "../components/AppHeader";
 
 const background = require("../../assets/bg.jpg");
 
@@ -27,17 +28,6 @@ export default function MyAccountScreen({ navigation }) {
 
   return (
     <ImageBackground source={background} style={styles.bg} resizeMode="cover">
-      <View style={styles.header}>
-        <Image
-          source={require("../../assets/Logo.png")}
-          style={styles.logo}
-          resizeMode="contain"
-        />
-        <TouchableOpacity onPress={() => navigation.openDrawer()}>
-          <Ionicons name="menu" size={28} color="#fff" />
-        </TouchableOpacity>
-      </View>
-
       <ScrollView contentContainerStyle={styles.container}>
         {/* Profile Section */}
         <View style={styles.profileCard}>
