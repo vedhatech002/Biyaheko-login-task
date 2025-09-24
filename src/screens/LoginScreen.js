@@ -1,4 +1,3 @@
-// src/screens/LoginScreen.js
 import React, { useContext } from "react";
 import {
   View,
@@ -27,7 +26,6 @@ export default function LoginScreen({ navigation }) {
     clearErrors();
 
     const result = await login(data);
-    console.log("Login result:", result); // 🔍 Debugging
 
     if (!result.success) {
       const msg = result.message || "Login failed";
@@ -42,10 +40,8 @@ export default function LoginScreen({ navigation }) {
         setError("username", { type: "manual", message: msg });
       }
 
-      return; // 🚨 prevent continuing on error
+      return;
     }
-
-    // ✅ If success, context sets user and RootNavigator will switch to AppStack
   };
   const formConfig = [
     {

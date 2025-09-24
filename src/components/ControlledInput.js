@@ -22,6 +22,7 @@ import { Picker } from "@react-native-picker/picker";
  * - rules (validation rules)
  * - options (for select): [{ label, value }]
  */
+
 const iconMapper = {
   fullName: "person-outline",
   username: "person-outline",
@@ -74,7 +75,7 @@ export default function ControlledInput({
                 placeholderTextColor={error ? "red" : "#666"}
                 secureTextEntry={secure}
                 autoCapitalize="none"
-                style={styles.input}
+                style={[styles.input, { color: "#000" }]}
               />
             )}
 
@@ -164,6 +165,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
     paddingHorizontal: 8,
+    color: "#000",
   },
   picker: {
     flex: 1,

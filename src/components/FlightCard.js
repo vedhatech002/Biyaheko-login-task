@@ -1,4 +1,3 @@
-// src/components/FlightCard.js
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
@@ -7,7 +6,6 @@ import { BlurView } from "expo-blur";
 export default function FlightCard({ flight }) {
   return (
     <BlurView intensity={70} tint="light" style={styles.card}>
-      {/* 🔹 Top Row: Airline + FlightNo + Plane Icon */}
       <View style={styles.topRow}>
         <Text style={styles.airline}>{flight.airline}</Text>
         <Ionicons
@@ -19,18 +17,15 @@ export default function FlightCard({ flight }) {
         <Text style={styles.flightNo}>{flight.flightNo}</Text>
       </View>
 
-      {/* 🔹 Route */}
       <Text style={styles.route}>
         {flight.from} → {flight.to}
       </Text>
 
-      {/* 🔹 Date & Time */}
       <Text style={styles.details}>
         <Ionicons name="calendar" size={14} color="#444" /> {flight.date} |{" "}
         <Ionicons name="time" size={14} color="#444" /> {flight.time}
       </Text>
 
-      {/* 🔹 Price */}
       <Text style={styles.price}>
         <Ionicons name="pricetag" size={14} color="#c62828" /> {flight.price}
       </Text>
@@ -43,7 +38,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     padding: 16,
     marginBottom: 14,
-    backgroundColor: "rgba(255,255,255,0.3)", // fallback
+    backgroundColor: "rgba(255,255,255,0.3)",
     overflow: "hidden",
   },
   topRow: {

@@ -1,17 +1,6 @@
-// src/screens/HomeScreen.js
 import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  ImageBackground,
-  TouchableOpacity,
-  Image,
-} from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { Text, StyleSheet, FlatList, ImageBackground } from "react-native";
 import FlightCard from "../components/FlightCard";
-import AppHeader from "../components/AppHeader";
 const background = require("../../assets/bg.jpg");
 
 const flights = [
@@ -80,10 +69,8 @@ const flights = [
 export default function HomeScreen({ navigation }) {
   return (
     <ImageBackground source={background} style={styles.bg} resizeMode="cover">
-      {/* 🔹 Section Title */}
       <Text style={styles.sectionTitle}>Available Flights</Text>
 
-      {/* 🔹 Flight List */}
       <FlatList
         data={flights}
         keyExtractor={(item) => item.id}

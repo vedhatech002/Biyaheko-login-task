@@ -1,4 +1,3 @@
-// src/screens/RegisterScreen.js
 import React, { useContext } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import AuthLayout from "../layouts/AuthLayout";
@@ -7,7 +6,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema } from "../utlis/formSchema";
 import { AuthContext } from "../context/AuthContext";
-import Toast from "react-native-toast-message";
 
 const baseFields = [
   { name: "fullName", placeholder: "Full Name", type: "text" },
@@ -83,14 +81,9 @@ export default function RegisterScreen({ navigation }) {
   const selectedCountry = watch("country");
 
   const onSubmit = async (data) => {
-    console.log("formData:", data);
-    console.log("formData raw keys:", Object.keys(data));
-
-    console.log("submitting");
     clearErrors();
 
     const result = await register(data);
-    console.log("res", result);
 
     if (!result.success) {
       if (result.field) {
@@ -99,10 +92,8 @@ export default function RegisterScreen({ navigation }) {
         setError("fullName", { type: "manual", message: result.message });
       }
 
-      return; // 🚨 stop here, don’t let RootNavigator switch
+      return;
     }
-
-    // ✅ success → AuthContext sets user, RootNavigator switches automatically
   };
 
   return (

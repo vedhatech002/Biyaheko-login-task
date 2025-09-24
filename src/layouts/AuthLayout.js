@@ -32,8 +32,7 @@ export default function AuthLayout({ title, subtitle, children }) {
               One Platform. Limitless Scale.
             </Text>
           </View>
-
-          {/* Card content injected here */}
+          {/* children card componet will be pass here */}
           <View style={styles.card}>{children}</View>
           <Footer />
         </ScrollView>

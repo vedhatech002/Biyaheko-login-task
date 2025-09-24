@@ -23,9 +23,6 @@ export default function Footer() {
     require("../../assets/logo_10.png"),
   ];
 
-  // Show 2 logos per frame
-  const itemWidth = width / 2.5;
-
   return (
     <BlurView intensity={90} tint="dark" style={styles.footer}>
       {/* Logo carousel */}
@@ -44,13 +41,7 @@ export default function Footer() {
         )}
       />
 
-      {/* Divider line */}
       <View style={styles.separator} />
-
-      {/* Copyright text */}
-      {/* <Text style={styles.copy}>
-        copyrights © 2025 Biyaheko . All rights reserved
-      </Text> */}
 
       <TouchableOpacity
         onPress={() => Linking.openURL("https://github.com/vedhatech002")}
@@ -71,8 +62,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 16,
     borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.25)", // subtle border for glass look
-    backgroundColor: "rgba(255, 255, 255, 0.1)", // fallback for blur
+    borderColor: "rgba(255,255,255,0.25)",
+    backgroundColor: "rgba(255, 255, 255, 0.1)",
     overflow: "hidden",
     marginTop: 20,
   },
@@ -80,12 +71,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    paddingHorizontal: 10, // spacing between logos
+    paddingHorizontal: 10,
   },
   logo: {
     width: 120,
     height: 50,
-    tintColor: "#fff", // makes logos white if they are monochrome
+    tintColor: "#fff",
   },
   separator: {
     width: "90%",
@@ -105,7 +96,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   link: {
-    color: "#4da6ff", // highlight clickable text
+    color: "#4da6ff",
     fontWeight: "bold",
   },
 });

@@ -1,4 +1,3 @@
-// src/screens/MyAccountScreen.js
 import React, { useContext } from "react";
 import {
   View,
@@ -6,12 +5,9 @@ import {
   StyleSheet,
   ImageBackground,
   ScrollView,
-  TouchableOpacity,
-  Image,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { AuthContext } from "../context/AuthContext";
-import AppHeader from "../components/AppHeader";
 
 const background = require("../../assets/bg.jpg");
 

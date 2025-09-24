@@ -1,4 +1,3 @@
-// src/context/AuthContext.js
 import React, { createContext, useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from "react-native-toast-message";
@@ -26,13 +25,11 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const loadUser = async () => {
       try {
-        // Ensure "users" DB exists with default user
         const storedUsers = await AsyncStorage.getItem("users");
         if (!storedUsers) {
           await AsyncStorage.setItem("users", JSON.stringify([defaultUser]));
         }
 
-        // Restore logged in user if exists
         const raw = await AsyncStorage.getItem("user");
         if (raw) setUser(JSON.parse(raw));
       } catch (e) {
@@ -43,8 +40,6 @@ export const AuthProvider = ({ children }) => {
     };
     loadUser();
   }, []);
-
-  // 🔹 LOGIN
 
   const login = async ({ username, password }) => {
     try {
@@ -71,7 +66,6 @@ export const AuthProvider = ({ children }) => {
         return { success: false, message: msg };
       }
 
-      // ✅ Save and set user on success
       await AsyncStorage.setItem("user", JSON.stringify(foundUser));
       setUser(foundUser);
 
@@ -94,7 +88,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // 🔹 REGISTER
   const register = async (formData) => {
     try {
       const storedUsers = JSON.parse(await AsyncStorage.getItem("users")) || [];
@@ -144,7 +137,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // 🔹 LOGOUT
   const logout = async () => {
     setLoading(true);
     try {
