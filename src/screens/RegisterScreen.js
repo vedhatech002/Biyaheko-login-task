@@ -1,27 +1,20 @@
 // src/screens/RegisterScreen.js
 import React, { useContext } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Image,
-  Alert,
-} from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import AuthLayout from "../layouts/AuthLayout";
 import ControlledInput from "../components/ControlledInput";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-// import { registerSchema } from "../utils/formSchemas";
-import { AuthContext } from "../context/AuthContext";
 import { registerSchema } from "../utlis/formSchema";
+import { AuthContext } from "../context/AuthContext";
+import Toast from "react-native-toast-message";
 
 const baseFields = [
   { name: "fullName", placeholder: "Full Name", type: "text" },
   { name: "email", placeholder: "Email Address", type: "text" },
   { name: "phone", placeholder: "Phone Number", type: "text" },
   { name: "passportNumber", placeholder: "Passport Number", type: "text" },
-  { name: "dob", placeholder: "Date of Birth", type: "date" },
+  { name: "dob", placeholder: "Date of Birth (YYYY-MM-DD)", type: "date" },
   {
     name: "country",
     placeholder: "Select Country",
@@ -36,8 +29,9 @@ const baseFields = [
     name: "state",
     placeholder: "Select State",
     type: "select",
-    options: [], // will be replaced dynamically
+    options: [],
   },
+  { name: "username", placeholder: "Username", type: "text" },
   { name: "password", placeholder: "Password", type: "password" },
   {
     name: "confirmPassword",
@@ -67,6 +61,8 @@ export default function RegisterScreen({ navigation }) {
     control,
     handleSubmit,
     watch,
+    setError,
+    clearErrors,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(registerSchema),
@@ -78,6 +74,7 @@ export default function RegisterScreen({ navigation }) {
       dob: "",
       country: "",
       state: "",
+      username: "",
       password: "",
       confirmPassword: "",
     },
@@ -86,11 +83,26 @@ export default function RegisterScreen({ navigation }) {
   const selectedCountry = watch("country");
 
   const onSubmit = async (data) => {
+    console.log("formData:", data);
+    console.log("formData raw keys:", Object.keys(data));
+
+    console.log("submitting");
+    clearErrors();
+
     const result = await register(data);
+    console.log("res", result);
+
     if (!result.success) {
-      Alert.alert("Error", result.message || "Failed to register");
+      if (result.field) {
+        setError(result.field, { type: "manual", message: result.message });
+      } else {
+        setError("fullName", { type: "manual", message: result.message });
+      }
+
+      return; // 🚨 stop here, don’t let RootNavigator switch
     }
-    // no navigation needed: root navigator should switch because `user` is set
+
+    // ✅ success → AuthContext sets user, RootNavigator switches automatically
   };
 
   return (
@@ -104,7 +116,6 @@ export default function RegisterScreen({ navigation }) {
       <Text style={styles.subtitle}>Create an Account to continue</Text>
 
       {baseFields.map((f) => {
-        // provide options for state dynamically
         const options =
           f.name === "state"
             ? statesByCountry[selectedCountry] || []
@@ -117,10 +128,6 @@ export default function RegisterScreen({ navigation }) {
             placeholder={f.placeholder}
             type={f.type}
             options={options}
-            rules={{
-              required:
-                f.name === "country" || f.name === "state" ? true : false,
-            }}
           />
         );
       })}

@@ -68,7 +68,7 @@ export default function ControlledInput({
             {/* text / password */}
             {(type === "text" || type === "password") && (
               <TextInput
-                value={value}
+                value={value ?? ""}
                 onChangeText={onChange}
                 placeholder={placeholder}
                 placeholderTextColor={error ? "red" : "#666"}

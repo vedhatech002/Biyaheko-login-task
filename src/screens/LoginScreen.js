@@ -1,41 +1,52 @@
-import React, { useState, useContext } from "react";
+// src/screens/LoginScreen.js
+import React, { useContext } from "react";
 import {
   View,
   Text,
-  TextInput,
   StyleSheet,
   TouchableOpacity,
-  ImageBackground,
-  KeyboardAvoidingView,
-  Platform,
   ActivityIndicator,
-  ScrollView,
   Image,
 } from "react-native";
-import { AuthContext } from "../context/AuthContext";
-import { Ionicons } from "@expo/vector-icons";
-import Footer from "../components/Footer";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "../utlis/formSchema";
 import ControlledInput from "../components/ControlledInput";
+import { AuthContext } from "../context/AuthContext";
 import AuthLayout from "../layouts/AuthLayout";
-
-// Put a background image at ./assets/background.jpg or remove ImageBackground wrapper.
-const background = require("../../assets/bg.jpg");
 
 export default function LoginScreen({ navigation }) {
   const { login, loading } = useContext(AuthContext);
 
-  const { control, handleSubmit } = useForm({
+  const { control, handleSubmit, setError, clearErrors } = useForm({
     resolver: zodResolver(loginSchema),
     defaultValues: { terminalId: "", username: "", password: "" },
   });
 
-  const onSubmit = (data) => {
-    login(data);
-  };
+  const onSubmit = async (data) => {
+    clearErrors();
 
+    const result = await login(data);
+    console.log("Login result:", result); // 🔍 Debugging
+
+    if (!result.success) {
+      const msg = result.message || "Login failed";
+
+      console.log("msg");
+
+      if (msg.toLowerCase().includes("user does not exist")) {
+        setError("username", { type: "manual", message: msg });
+      } else if (msg.toLowerCase().includes("password")) {
+        setError("password", { type: "manual", message: msg });
+      } else {
+        setError("username", { type: "manual", message: msg });
+      }
+
+      return; // 🚨 prevent continuing on error
+    }
+
+    // ✅ If success, context sets user and RootNavigator will switch to AppStack
+  };
   const formConfig = [
     {
       name: "terminalId",
@@ -53,25 +64,20 @@ export default function LoginScreen({ navigation }) {
         style={styles.logo}
         resizeMode="contain"
       />
-
       <Text style={styles.title}>Welcome</Text>
       <Text style={styles.subtitle}>Log in to your account to continue</Text>
 
-      {formConfig.map((field) => (
+      {formConfig.map((f) => (
         <ControlledInput
-          key={field.name}
+          key={f.name}
           control={control}
-          name={field.name}
-          placeholder={field.placeholder}
-          type={field.type}
+          name={f.name}
+          placeholder={f.placeholder}
+          type={f.type}
         />
       ))}
 
-      <TouchableOpacity
-        onPress={() => {
-          /* TODO: forgot password flow */
-        }}
-      >
+      <TouchableOpacity onPress={() => {}}>
         <Text style={styles.forgot}>Forgot your password?</Text>
       </TouchableOpacity>
 
@@ -98,13 +104,7 @@ export default function LoginScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  logo: {
-    width: 180,
-    height: 50,
-    alignSelf: "center",
-    marginBottom: 5,
-  },
-
+  logo: { width: 180, height: 50, alignSelf: "center", marginBottom: 5 },
   title: { fontSize: 22, fontWeight: "600", textAlign: "center" },
   subtitle: { textAlign: "center", color: "#666", marginBottom: 14 },
   forgot: { color: "#d33", textAlign: "right", marginVertical: 2 },

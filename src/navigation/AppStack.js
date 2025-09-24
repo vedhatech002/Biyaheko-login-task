@@ -27,11 +27,7 @@ function DrawerWrapper(props) {
   return (
     <>
       {/* Change status bar based on drawer state */}
-      <StatusBar
-        style={"light"}
-        translucent={false}
-        backgroundColor={drawerStatus === "open" ? "#000" : "transparent"}
-      />
+      <StatusBar style={"light"} translucent={false} backgroundColor={"#000"} />
       <CustomDrawerContent {...props} />
     </>
   );

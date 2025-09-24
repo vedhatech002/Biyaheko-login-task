@@ -6,6 +6,7 @@ import AppStack from "./src/navigation/AppStack";
 import { View, ActivityIndicator } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
+import Toast from "react-native-toast-message";
 
 function RootNavigator() {
   const { user, loading } = useContext(AuthContext);
@@ -32,6 +33,7 @@ export default function App() {
             translucent={false}
           />
           <RootNavigator />
+          <Toast />
         </NavigationContainer>
       </AuthProvider>
     </SafeAreaProvider>
