@@ -1,33 +1,128 @@
-import React, { useContext } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import { AuthContext } from "../context/AuthContext";
+// src/screens/HomeScreen.js
+import React from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  ImageBackground,
+  TouchableOpacity,
+  Image,
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import FlightCard from "../components/FlightCard";
+const background = require("../../assets/bg.jpg");
 
-export default function HomeScreen() {
-  const { user, logout } = useContext(AuthContext);
+const flights = [
+  {
+    id: "1",
+    airline: "Sunlight Air",
+    flightNo: "SL123",
+    from: "Chennai (MAA)",
+    to: "Delhi (DEL)",
+    date: "2025-09-28",
+    time: "08:30 AM",
+    price: "₹5,200",
+  },
+  {
+    id: "2",
+    airline: "SkyJet",
+    flightNo: "SJ456",
+    from: "Bangalore (BLR)",
+    to: "Mumbai (BOM)",
+    date: "2025-09-29",
+    time: "06:45 PM",
+    price: "₹4,800",
+  },
+  {
+    id: "3",
+    airline: "IndiFly",
+    flightNo: "IF789",
+    from: "Kolkata (CCU)",
+    to: "Hyderabad (HYD)",
+    date: "2025-09-30",
+    time: "09:10 AM",
+    price: "₹4,500",
+  },
+  {
+    id: "4",
+    airline: "AirConnect",
+    flightNo: "AC101",
+    from: "Delhi (DEL)",
+    to: "Goa (GOI)",
+    date: "2025-10-01",
+    time: "11:20 AM",
+    price: "₹6,000",
+  },
+  {
+    id: "5",
+    airline: "FlyFast",
+    flightNo: "FF202",
+    from: "Mumbai (BOM)",
+    to: "Dubai (DXB)",
+    date: "2025-10-02",
+    time: "02:30 PM",
+    price: "₹15,800",
+  },
+  {
+    id: "6",
+    airline: "GlobalAir",
+    flightNo: "GA303",
+    from: "Delhi (DEL)",
+    to: "Singapore (SIN)",
+    date: "2025-10-03",
+    time: "01:00 AM",
+    price: "₹22,400",
+  },
+];
 
+export default function HomeScreen({ navigation }) {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Welcome, {user?.username || "agent"}!</Text>
-      <Text style={styles.subtitle}>Terminal: {user?.terminalId || "—"}</Text>
-      <TouchableOpacity style={styles.logout} onPress={logout}>
-        <Text style={{ color: "#fff", fontWeight: "700" }}>LOGOUT</Text>
-      </TouchableOpacity>
-    </View>
+    <ImageBackground source={background} style={styles.bg} resizeMode="cover">
+      {/* 🔹 Header */}
+      <View style={styles.header}>
+        <Image
+          source={require("../../assets/Logo.png")}
+          style={styles.logo}
+          resizeMode="contain"
+        />
+        <TouchableOpacity onPress={() => navigation.openDrawer()}>
+          <Ionicons name="menu" size={28} color="#fff" />
+        </TouchableOpacity>
+      </View>
+
+      {/* 🔹 Section Title */}
+      <Text style={styles.sectionTitle}>Available Flights</Text>
+
+      {/* 🔹 Flight List */}
+      <FlatList
+        data={flights}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle={{ padding: 16, paddingBottom: 40 }}
+        showsVerticalScrollIndicator={false}
+        renderItem={({ item }) => <FlightCard flight={item} />}
+      />
+    </ImageBackground>
   );
 }
+
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    justifyContent: "center",
+  bg: { flex: 1 },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
+    paddingTop: 50,
+    paddingHorizontal: 15,
+    backgroundColor: "rgba(0,0,0,0.3)",
   },
-  title: { fontSize: 24, fontWeight: "700", marginBottom: 6 },
-  subtitle: { color: "#666", marginBottom: 18 },
-  logout: {
-    backgroundColor: "#b00020",
-    paddingVertical: 12,
-    paddingHorizontal: 18,
-    borderRadius: 8,
+  logo: { width: 150, height: 50, alignSelf: "center", marginBottom: 5 },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: "700",
+    color: "#fff",
+    paddingHorizontal: 16,
+    marginTop: 12,
+    marginBottom: 8,
   },
 });

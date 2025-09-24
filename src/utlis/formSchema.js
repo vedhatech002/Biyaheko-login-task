@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 const countryStates = {
-  IN: ["TN", "KL", "MH"], // example valid states for India
+  IN: ["TN", "KL", "MH"],
   US: ["CA", "TX", "NY"],
   UK: ["LDN"],
 };
@@ -30,7 +30,16 @@ export const registerSchema = z
       }),
     country: z.string().nonempty("Please select a country"),
     state: z.string().nonempty("Please select a state"),
-    password: z.string().min(6, "Password must be at least 6 characters"),
+    password: z
+      .string()
+      .min(8, "Password must be at least 8 characters")
+      .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+      .regex(/[a-z]/, "Password must contain at least one lowercase letter")
+      .regex(/[0-9]/, "Password must contain at least one number")
+      .regex(
+        /[@$!%*?&]/,
+        "Password must contain at least one special character"
+      ),
     confirmPassword: z.string(),
   })
   // confirm password match
@@ -38,11 +47,10 @@ export const registerSchema = z
     message: "Passwords do not match",
     path: ["confirmPassword"],
   })
-  // state must belong to the chosen country
   .refine(
     (data) => {
       const valid = countryStates[data.country] ?? null;
-      if (!valid) return true; // no mapping => don't validate
+      if (!valid) return true;
       return valid.includes(data.state);
     },
     {

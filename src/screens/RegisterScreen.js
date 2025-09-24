@@ -159,6 +159,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   subtitle: { textAlign: "center", color: "#666", marginBottom: 14 },
-  btn: { paddingVertical: 12, paddingHorizontal: 18, borderRadius: 8 },
+  btn: { paddingVertical: 12, paddingHorizontal: 42, borderRadius: 8 },
   btnText: { color: "#fff", fontWeight: "700" },
 });
