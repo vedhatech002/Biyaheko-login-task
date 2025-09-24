@@ -1,27 +1,43 @@
-import React, { useContext, useState } from "react";
+// src/screens/RegisterScreen.js
+import React, { useContext } from "react";
 import {
   View,
   Text,
-  TextInput,
   TouchableOpacity,
   StyleSheet,
-  ScrollView,
   Image,
+  Alert,
 } from "react-native";
 import AuthLayout from "../layouts/AuthLayout";
 import ControlledInput from "../components/ControlledInput";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { registerSchema } from "../utlis/formSchema";
+// import { registerSchema } from "../utils/formSchemas";
 import { AuthContext } from "../context/AuthContext";
-import Toast from "react-native-root-toast";
+import { registerSchema } from "../utlis/formSchema";
 
-const fields = [
+const baseFields = [
   { name: "fullName", placeholder: "Full Name", type: "text" },
   { name: "email", placeholder: "Email Address", type: "text" },
   { name: "phone", placeholder: "Phone Number", type: "text" },
   { name: "passportNumber", placeholder: "Passport Number", type: "text" },
-  { name: "dob", placeholder: "Date of Birth (YYYY-MM-DD)", type: "text" },
+  { name: "dob", placeholder: "Date of Birth", type: "date" },
+  {
+    name: "country",
+    placeholder: "Select Country",
+    type: "select",
+    options: [
+      { label: "India", value: "IN" },
+      { label: "USA", value: "US" },
+      { label: "UK", value: "UK" },
+    ],
+  },
+  {
+    name: "state",
+    placeholder: "Select State",
+    type: "select",
+    options: [], // will be replaced dynamically
+  },
   { name: "password", placeholder: "Password", type: "password" },
   {
     name: "confirmPassword",
@@ -30,17 +46,53 @@ const fields = [
   },
 ];
 
+const statesByCountry = {
+  IN: [
+    { label: "Tamil Nadu", value: "TN" },
+    { label: "Kerala", value: "KL" },
+    { label: "Maharashtra", value: "MH" },
+  ],
+  US: [
+    { label: "California", value: "CA" },
+    { label: "Texas", value: "TX" },
+    { label: "New York", value: "NY" },
+  ],
+  UK: [{ label: "London", value: "LDN" }],
+};
+
 export default function RegisterScreen({ navigation }) {
-  const { control, handleSubmit } = useForm({
-    resolver: zodResolver(registerSchema),
-  });
   const { register } = useContext(AuthContext);
+
+  const {
+    control,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(registerSchema),
+    defaultValues: {
+      fullName: "",
+      email: "",
+      phone: "",
+      passportNumber: "",
+      dob: "",
+      country: "",
+      state: "",
+      password: "",
+      confirmPassword: "",
+    },
+  });
+
+  const selectedCountry = watch("country");
+
   const onSubmit = async (data) => {
-    await register(data);
+    const result = await register(data);
     if (!result.success) {
       Alert.alert("Error", result.message || "Failed to register");
     }
+    // no navigation needed: root navigator should switch because `user` is set
   };
+
   return (
     <AuthLayout>
       <Image
@@ -51,15 +103,27 @@ export default function RegisterScreen({ navigation }) {
       <Text style={styles.title}>Welcome</Text>
       <Text style={styles.subtitle}>Create an Account to continue</Text>
 
-      {fields.map((f) => (
-        <ControlledInput
-          key={f.name}
-          control={control}
-          name={f.name}
-          placeholder={f.placeholder}
-          type={f.type}
-        />
-      ))}
+      {baseFields.map((f) => {
+        // provide options for state dynamically
+        const options =
+          f.name === "state"
+            ? statesByCountry[selectedCountry] || []
+            : f.options;
+        return (
+          <ControlledInput
+            key={f.name}
+            control={control}
+            name={f.name}
+            placeholder={f.placeholder}
+            type={f.type}
+            options={options}
+            rules={{
+              required:
+                f.name === "country" || f.name === "state" ? true : false,
+            }}
+          />
+        );
+      })}
 
       <View
         style={{
@@ -74,6 +138,7 @@ export default function RegisterScreen({ navigation }) {
         >
           <Text style={styles.btnText}>CANCEL</Text>
         </TouchableOpacity>
+
         <TouchableOpacity
           style={[styles.btn, { backgroundColor: "#1d2be0" }]}
           onPress={handleSubmit(onSubmit)}
@@ -86,6 +151,7 @@ export default function RegisterScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  logo: { width: 180, height: 50, alignSelf: "center", marginBottom: 5 },
   title: {
     fontSize: 20,
     fontWeight: "700",
@@ -93,12 +159,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   subtitle: { textAlign: "center", color: "#666", marginBottom: 14 },
-  logo: {
-    width: 180,
-    height: 50,
-    alignSelf: "center",
-    marginBottom: 5,
-  },
   btn: { paddingVertical: 12, paddingHorizontal: 18, borderRadius: 8 },
   btnText: { color: "#fff", fontWeight: "700" },
 });
