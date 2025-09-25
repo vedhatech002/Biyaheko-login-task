@@ -67,7 +67,7 @@ It demonstrates key app development concepts such as:
 ### 1. Clone the repository
 
 ```
-git clone https://github.com/<your-username>/Biyaheko-task.git
+https://github.com/vedhatech002/Biyaheko-login-task.git
 cd Biyaheko-task
 ```
 
