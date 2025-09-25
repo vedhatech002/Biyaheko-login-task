@@ -171,7 +171,9 @@ All validation logic lives in:
 
 ## 🎥 Demo Video
 
-<video src="https://github.com/vedhatech002/Biyaheko-login-task/raw/main/assets/demo.mp4" controls width="400"></video>
+https://github.com/vedhatech002/Biyaheko-login-task/blob/main/assets/demo.mp4
+
+🔽 [Download Demo Video](https://github.com/vedhatech002/Biyaheko-login-task/blob/main/assets/demo.mp4)
 
 ## 📥 Download APK
 
