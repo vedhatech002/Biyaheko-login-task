@@ -171,7 +171,11 @@ All validation logic lives in:
 
 ## 🎥 Demo Video
 
-https://github.com/vedhatech002/Biyaheko-login-task/blob/main/assets/demo.mp4
+<video src="https://github.com/vedhatech002/Biyaheko-login-task/raw/main/assets/demo.mp4" 
+       controls 
+       width="600">
+Your browser does not support the video tag.
+</video>
 
 🔽 [Download Demo Video](https://github.com/vedhatech002/Biyaheko-login-task/blob/main/assets/demo.mp4)
 
