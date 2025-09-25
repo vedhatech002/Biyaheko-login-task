@@ -169,15 +169,13 @@ All validation logic lives in:
 
 ---
 
-## 📸 Screenshots
-
 ## 🎥 Demo Video
 
-[Download Demo Video](https://github.com/<username>/<repo>/assets/12345678/demo.mp4)
+<video src="https://github.com/vedhatech002/Biyaheko-login-task/raw/main/assets/demo.mp4" controls width="400"></video>
 
 ## 📥 Download APK
 
-👉 [Download Latest APK](https://github.com/<your-username>/<your-repo>/releases/download/v1.0.0/app-release.apk)
+👉 [Download Latest APK](https://github.com/vedhatech002/Biyaheko-login-task/releases/download/biaheko-task-v1.0.0/Biyaheko-task-Preview.apk)
 
 ## 📜 License
 
