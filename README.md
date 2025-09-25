@@ -173,7 +173,8 @@ All validation logic lives in:
 
 <video src="https://github.com/vedhatech002/Biyaheko-login-task/raw/main/assets/demo.mp4" 
        controls 
-       width="600">
+       width="400" 
+       height="300">
 Your browser does not support the video tag.
 </video>
 
